@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include<limits.h>
+#include<string.h>
 #define pi 3.14159265359
 
 #define R 6371
@@ -28,10 +29,61 @@ double calculer_distance(double lat1,double lon1,double lat2,double lon2)  // On
 }
 
 
+typedef struct element element;
+
+struct element
+{
+    char ville;
+    char latitude;
+    char longitude;
+    element* next;
+};
+
+// Création de nvxElement
+element* insertion(element *liste, char ville, int latitude, int longitude)
+{
+    element *nvxElement = malloc(sizeof( *nvxElement));
+
+    if (nvxElement == NULL)
+    {
+        exit(EXIT_FAILURE);
+    }
+
+    nvxElement->ville=ville;
+    nvxElement->latitude=latitude;
+    nvxElement->longitude=longitude;
+    nvxElement->next = liste;
+
+    return nvxElement;
+}
+
 
 int main()
 {
-    double x = calculer_distance(41.92706484, 8.728293822, 49.90037661, 2.300004027);
+    FILE* fichier = NULL;
+    int caractereActuel = 0;
+    fichier = fopen("Cites.csv", "r+");
+    element* listee=NULL;
+    char ville[30];
+    float latitude;
+    float longitude;
+    if (fichier != NULL)
+
+    {
+        while (fscanf(fichier,"%30[^,],%f,%f", ville, &latitude,&longitude)!=EOF)
+               {
+                   printf("%s, %f, %f", ville, latitude,longitude);
+
+               }
+
+    }
+    double x = calculer_distance(48.86669293, 2.333335326, 43.61039878, 3.869985716);  // Exemple Paris / Montpellier
     printf("La distance est %f", x);
 
+    fclose(fichier);
+
+
+    return 0;
 }
+
+
