@@ -1,21 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
-//#include "Header.h"
+#include "Header.h"
 #include<limits.h>
 #include<string.h>
+#define BUF_SIZE 2048
 
-typedef struct element element;
 
-struct element
-{
-    char ville;
-    char latitude;
-    char longitude;
-    element* next;
-};
 
 // Création de nvxElement
-element* insertion(element *liste, char ville, int latitude, int longitude)
+element* insertion(element *liste, char* ville, float latitude, float longitude)
 {
     element *nvxElement = malloc(sizeof( *nvxElement));
 
@@ -42,51 +35,56 @@ void afficherListe(element *liste)
     element *actuel = liste;
     while (actuel != NULL)
     {
-        printf("%c,%d,%d -> ", actuel->ville,actuel->latitude,actuel->longitude);
+
+        printf("%s,%f,%f -> ", actuel->ville,actuel->latitude,actuel->longitude);
         actuel = actuel->next;
     }
 
     printf("NULL\n");
 }
+
+
+
 int main()
 {
     FILE* fichier = NULL;
     int caractereActuel = 0;
-    fichier = fopen("Cites.csv", "r+");
+    fichier = fopen("test.csv", "r+");
     element* listee=NULL;
-    char ville[30];
+
     float latitude;
     float longitude;
+
     if (fichier != NULL)
 
     {
-        while (fscanf(fichier,"%30[^,],%f,%f", ville, &latitude,&longitude)!=EOF)
+       /*AFFICHAGE SANS PARSER
+       while (fscanf(fichier,"%30[^,],%f,%f", ville, &latitude,&longitude)!=EOF)
+
                {
-                   printf("%s, %f, %f", ville, latitude,longitude);
-                  /* listee = insertion(listee,ville,latitude, longitude);
-                   afficherListe(listee);*/
+                   printf("%s, %f, %f",ville, latitude,longitude);
 
 
 
+               }*/
 
-               }
-
-       /* char laLigne[100];
+        char laLigne[50];
         while(fgets(laLigne,sizeof(laLigne),fichier) !=NULL)
         {
-            char* premier= strtok(laLigne, ",");
+            char* a= strtok(laLigne, ",");
+            char* ville=malloc(1+strlen(a));
             // utiliser la méthode strcpy pour avoir une string
-            char* deuxieme=strtok(NULL,",");
-            char* troisieme=strtok(NULL," ");
-            int valeur=atoi(deuxieme);
-            int valeurbis=atoi(troisieme);
-            int latitude=deuxieme;
-            int longitude=troisieme;
-            char ville=*premier;
+            char* b=strtok(NULL,",");
+            char* c=strtok(NULL," ");
+            double valeur= atof(b);
+            double valeurbis=atof(c);
+            float latitude=valeur;
+            float longitude=valeurbis;
+            strcpy(ville,a);
             listee = insertion(listee,ville,valeur, valeurbis);
             afficherListe(listee);
 
-        }*/
+        }
 
 
     }
