@@ -1,11 +1,46 @@
+
+
+#include<limits.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "Header.h"
+#include <math.h>
 #include<limits.h>
 #include<string.h>
-#define BUF_SIZE 2048
+#define pi 3.14159265359
+
+#define R 6371
+
+typedef struct element element;
+typedef struct element*liste;
+
+struct element
+{
+    char* ville;
+    float latitude;
+    float longitude;
+    element* next;
+};
+
+double degToRad(double degree)  // Method to convert to Radian from Degree
+{
+    return degree * (pi/180);
+}
+
+double calculer_distance(float lat1,float lon1,float lat2,float lon2)  // On extrait du csv les points latX, lonX
+{
+    //static const int R = 6371;  // Radius of the earth
 
 
+
+    double deltaLat = degToRad(lat2-lat1); // degToRad is a method that converts the delta of latitudes/longitudes ( which is in degree )
+    double deltaLon = degToRad(lon2-lon1);
+    double a = sin(deltaLat/2) * sin(deltaLat/2) + cos(degToRad(lat1)) * cos(degToRad(lat2)) * sin(deltaLon/2) * sin(deltaLon/2); // sin^2(dLat) +sin^2(dLon) * cos(lat1*pi/180) * cos(lat2*pi/180)
+    double c = 2 * atan2(sqrt(a), sqrt(1-a));
+    double d = R * c; // d distance in km
+    return d;
+
+
+}
 
 // Création de nvxElement
 element* insertion(element *liste, char* ville, float latitude, float longitude)
@@ -43,13 +78,46 @@ void afficherListe(element *liste)
     printf("NULL\n");
 }
 
+void ParcourirListe(element*liste)
+{
+    element *actuel =liste;
+    float latitude;
+    float longitude;
+
+    while (actuel !=NULL)
+    {
+        element *actuelbis =actuel->next;
+
+
+        while (actuelbis !=NULL)
+       {
+
+
+        double x = calculer_distance(actuel->latitude,actuel->longitude,actuelbis->latitude,actuelbis->longitude);
+
+        if (x>100)
+        {
+
+            printf("%f\n", x);
+        }
+
+
+        actuelbis=actuelbis->next;
+        actuel=actuel->next;
+    }
+}
+
+   printf("NULL\n");
+
+}
+
 
 
 int main()
 {
     FILE* fichier = NULL;
     int caractereActuel = 0;
-    fichier = fopen("test.csv", "r+");
+    fichier = fopen("Cites.csv", "r+");
     element* listee=NULL;
 
     float latitude;
@@ -58,15 +126,6 @@ int main()
     if (fichier != NULL)
 
     {
-       /*AFFICHAGE SANS PARSER
-       while (fscanf(fichier,"%30[^,],%f,%f", ville, &latitude,&longitude)!=EOF)
-
-               {
-                   printf("%s, %f, %f",ville, latitude,longitude);
-
-
-
-               }*/
 
         char laLigne[50];
         while(fgets(laLigne,sizeof(laLigne),fichier) !=NULL)
@@ -85,7 +144,10 @@ int main()
             afficherListe(listee);
 
         }
+       // ATTENTION LA LISTE EST A L'ENVERS !!
 
+    printf("\n\n\n\n\n");
+    ParcourirListe(listee);
 
     }
     fclose(fichier);
