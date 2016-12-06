@@ -1,5 +1,4 @@
 
-
 #include<limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -111,6 +110,61 @@ void ParcourirListe(element*liste)
 
 }
 
+/*void CreationMatrice(element*liste)
+
+{
+
+    float matrice[5][5];
+    int x=0,y=0;
+    element *actuel =liste;
+    float latitude;
+    float longitude;
+
+    while (actuel !=NULL)
+    {
+        element *actuelbis =actuel->next;
+
+
+        while (actuelbis !=NULL)
+       {
+
+
+        double distance = calculer_distance(actuel->latitude,actuel->longitude,actuelbis->latitude,actuelbis->longitude);
+
+        if (distance>100)
+        {
+
+            //printf("%lf \n", distance);
+            matrice[x][y]=distance;
+        }
+
+        else {
+            matrice[x][y]=0;
+        }
+
+
+        actuelbis=actuelbis->next;
+        y++;
+
+    }
+    x++;
+    actuel=actuel->next;
+}
+
+printf("%d,%d",x,y);
+
+int i;
+for (i=0;i<x;i++)
+{
+    int j;
+    for(j=0;j<y;j++)
+        {
+            printf("%f \t",matrice[i][j]);
+        }
+}
+printf("\n");
+
+}*/
 
 
 int main()
@@ -147,9 +201,12 @@ int main()
        // ATTENTION LA LISTE EST A L'ENVERS !!
 
     printf("\n\n\n\n\n");
-    ParcourirListe(listee);
+   //ParcourirListe(listee);
+   CreationMatrice(listee);
+}
 
-    }
+
+
     fclose(fichier);
     return 0;
 }
