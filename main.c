@@ -58,6 +58,28 @@ element* insertion(element *liste, char ville, int latitude, int longitude)
 }
 
 
+/*  Méthode pour créer matrice de la struct qui veut toujours pas marcher
+int main()
+{
+    FILE* fichier = NULL;
+    //int entryCount;
+    fichier = fopen("Cites.csv", "r+");
+
+    element **elem = malloc(sizeof(element) * 150);
+
+    for(int i=0; i<72;i++)
+    {
+        for(int j=0;j<2;j++)
+        {
+            elem[i][j].ville = malloc(sizeof(char)*20);
+
+            fscanf(fichier,"%c %i %i", elem[i][j].ville, elem[i][j].latitude,elem[i][j].longitude);
+
+            printf("%c %i %i", elem[i][j].ville, elem[i][j].latitude,elem[i][j].longitude);
+        }
+    }
+    //fclose(fichier);
+}*/
 int main()
 {
     FILE* fichier = NULL;
