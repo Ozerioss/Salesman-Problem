@@ -1,0 +1,34 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+//int matrix[71][71], limite, cost = 0;
+
+int LocalSearch(int c)
+{
+	int count;
+	int max = 100; 
+	int temp;
+	
+	for(count = 0; count < limite; count++)
+	{
+		if((matrix[c][count] != 0) && (visited_cities[count] == 0))
+		{
+			while (matrix[c][count] > max )
+			{
+				max = matrix[count][0] + matrix[c][count];
+				count ++;
+			}
+			
+			temp = matrix[c][count];
+		}
+	}
+	
+	if(max!= 100)
+	{
+		cost = cost + temp;
+	}
+	return nearest_city;
+}
+
+//affichage du max 
