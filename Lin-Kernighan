@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct element* list;
+typedef struct element element;
+typedef struct matrice_distance matrice_distance; 
+typedef struct indexVille indexVille;
+
+struct element
+{
+    char* ville;
+    float latitude;
+    float longitude;
+    element* next;
+};
+
+struct matrice_distance
+{
+    int limite; 
+    double **tab;
+};
+
+struct indexVille
+{
+    char* index; 
+};
+
+//initialisation de la matrice??? 
+
+
+
+list LinKernighan(liste Ville)
+{
+    //choix d'une ville;
+
+    element* villeChoisie=liste;
+    element* villeSuivante=liste->next;
+    
+    
+    //Pour récuperer la distance dans la matrice 
+    //Il faudrait faire une liste avec les noms des villes 
+    //Mettre a coté de la matrice les index et non le nom des villes 
+    int ville1;
+    int ville2; 
+    
+    matrice_distance* matrice=matrice->tab[ville1->index][ville2->index];
+    
+    double Choix1= matrice(matrice,villeChoisie,villeSuivante);
+    double Choix2= matrice(matrice,villeSuivante->next,villeSuivante->next->next);
+    
+    
+    if (Choix1 !=-1 && Choix2 !=-1)
+    {
+        if (Choix 1<Choix2)
+        {
+            
+            //echanger les edges
+        }
+    }
+    
+    else 
+    {
+        villeChoisie=villeSuivante;
+        villeSuivante=villeSuivante->next;
+    }
+    
+}
