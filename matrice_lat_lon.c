@@ -10,11 +10,12 @@
 
 #define R 6371
 
-#define MAX_STR_LEN 256
+#define MAX_STR_LEN 1024
 #define NBR_VILLES 72
 
 struct ville{
-    char *nom;
+    int index;
+    char* nom;
     float latitude;
     float longitude;
 };
@@ -57,6 +58,7 @@ int readCitiesFile()
 
     /* allocation of the buffer for every line in the File */
     char *buf = malloc(MAX_STR_LEN);
+    //char *buf = malloc(sizeof(struct ville));
     char *tmp;
 
     /* if the space could not be allocaed, return an error */
@@ -77,7 +79,9 @@ int readCitiesFile()
             buf[strlen (buf) - 1] = '\0';
 
         tmp = strtok(buf, ",");
-        villes[i].nom = (tmp);
+        //villes[i].nom = tmp;
+        villes[i].nom = strdup(tmp);
+       //printf("%s", tmp);
 
         tmp = strtok(NULL, ",");
         villes[i].latitude = atof(tmp);
@@ -85,6 +89,7 @@ int readCitiesFile()
         tmp = strtok(NULL, ",");
         villes[i].longitude = atof(tmp);
 
+        villes[i].index = i;
         i++;
     }
     //free(buf);
@@ -99,8 +104,8 @@ void printCitiesList()
 
     for (i = 1; i <= 71; i++)
     {
-        if (villes[i].nom != 0)
-        printf("index i= %i   %f, %f\n",i+1, villes[i].latitude, villes[i].longitude);
+        if (villes[i].nom != NULL)
+        printf("index i= %i %s -- %f -- %f\n", villes[i].index, villes[i].nom, villes[i].latitude, villes[i].longitude);
         else
             break;
     }
@@ -115,11 +120,12 @@ int main(int argc, char **argv)
     isOK = readCitiesFile();
 
     printCitiesList();
+    printf("test\n");
+    //printf("ville : %s", );
+
     system("pause");
     return 0;
 }
-
-
 
 
 
