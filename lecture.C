@@ -1,5 +1,4 @@
 
-
 #include<limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,6 +20,13 @@ struct element
     element* next;
 };
 
+typedef struct matrice_distance matrice_distance;
+
+struct matrice_distance
+{
+    int nbVille;
+    double **tab;
+};
 double degToRad(double degree)  // Method to convert to Radian from Degree
 {
     return degree * (pi/180);
@@ -61,7 +67,7 @@ element* insertion(element *liste, char* ville, float latitude, float longitude)
 }
 
 //Afficher
-void afficherListe(element *liste)
+/*void afficherListe(element *liste)
 {
     if (liste == NULL)
     {
@@ -76,6 +82,34 @@ void afficherListe(element *liste)
     }
 
     printf("NULL\n");
+}*/
+
+
+void MatriceVille(matrice_distance* matrice)
+{
+    int i = 0, j = 0;
+    printf("\n");
+    printf("\t");
+
+    for(i=0;i<matrice->nbVille;i++)
+    printf("%d\t",i);
+    printf("\n");
+
+
+    for (i = 0; i <matrice->nbVille; i++)
+    {
+        printf("%d\t",i);
+        for (j = 0; j < matrice->nbVille; j++)
+        {
+
+            int actuel,actuelbis;
+            double dist = matrice->tab[actuel][actuelbis];
+            double distance=dist(matrice,i,j);
+            if(distance==0) printf("INFINI\t");
+            else printf("%.2f\t", distance);
+        }
+        printf("\n");
+    }
 }
 
 void ParcourirListe(element*liste)
@@ -93,87 +127,34 @@ void ParcourirListe(element*liste)
        {
 
 
-        double x = calculer_distance(actuel->latitude,actuel->longitude,actuelbis->latitude,actuelbis->longitude);
+        double distance = calculer_distance(actuel->latitude,actuel->longitude,actuelbis->latitude,actuelbis->longitude);
 
-        if (x>100)
+        if (distance<=100)
         {
 
-            printf("%f\n", x);
+            distance=-1;
         }
 
 
         actuelbis=actuelbis->next;
-        actuel=actuel->next;
+
     }
+
+     actuel=actuel->next;
 }
 
    printf("NULL\n");
 
 }
 
-/*void CreationMatrice(element*liste)
-
-{
-
-    float matrice[5][5];
-    int x=0,y=0;
-    element *actuel =liste;
-    float latitude;
-    float longitude;
-
-    while (actuel !=NULL)
-    {
-        element *actuelbis =actuel->next;
-
-
-        while (actuelbis !=NULL)
-       {
-
-
-        double distance = calculer_distance(actuel->latitude,actuel->longitude,actuelbis->latitude,actuelbis->longitude);
-
-        if (distance>100)
-        {
-
-            //printf("%lf \n", distance);
-            matrice[x][y]=distance;
-        }
-
-        else {
-            matrice[x][y]=0;
-        }
-
-
-        actuelbis=actuelbis->next;
-        y++;
-
-    }
-    x++;
-    actuel=actuel->next;
-}
-
-printf("%d,%d",x,y);
-
-int i;
-for (i=0;i<x;i++)
-{
-    int j;
-    for(j=0;j<y;j++)
-        {
-            printf("%f \t",matrice[i][j]);
-        }
-}
-printf("\n");
-
-}*/
-
 
 int main()
 {
     FILE* fichier = NULL;
     int caractereActuel = 0;
-    fichier = fopen("Cites.csv", "r+");
+    fichier = fopen("test.csv", "r+");
     element* listee=NULL;
+    liste villes;
 
     float latitude;
     float longitude;
@@ -196,14 +177,16 @@ int main()
             float longitude=valeurbis;
             strcpy(ville,a);
             listee = insertion(listee,ville,valeur, valeurbis);
-            afficherListe(listee);
+            //afficherListe(listee);
 
         }
        // ATTENTION LA LISTE EST A L'ENVERS !!
 
     printf("\n\n\n\n\n");
    //ParcourirListe(listee);
-   CreationMatrice(listee);
+   matrice_distance* Matriix=(villes,NBCITY);
+   ParcourirListe(Matriix);
+
 }
 
 
