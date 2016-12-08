@@ -83,10 +83,10 @@ int readBookFile()
         books[i].ville = (tmp);
 
         tmp = strtok(NULL, ",");
-        books[i].latitude = atoi(tmp);
+        books[i].latitude = atof(tmp);
 
         tmp = strtok(NULL, ",");
-        books[i].longitude = atoi(tmp);
+        books[i].longitude = atof(tmp);
 
         //tempBook.ID = atoi(buf);
         //printf("index i= %i  Ville: %c latitude : %f longitude : %f\n",i, books[i].ville , books[i].latitude, books[i].longitude);
