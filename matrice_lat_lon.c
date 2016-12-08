@@ -1,3 +1,5 @@
+
+
 #include<limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,18 +25,30 @@ struct ville villes[NBR_VILLES];
 int readCitiesFile();
 void printCitiesList();
 
-int main(int argc, char **argv)
+
+//Méthodes pour faciliter le calcul des distances à partir des latitudes / longitudes
+double degToRad(double degree)  // Method to convert to Radian from Degree
 {
-    int isOK = 0;
-
-    /*isOK = */readCitiesFile();
-
-    printCitiesList();
-
-    system("pause");
-    return 0;
+    return degree * (pi/180);
 }
 
+double calculer_distance(float lat1,float lon1,float lat2,float lon2)  // On extrait du csv les points latX, lonX
+{
+    //static const int R = 6371;  // Radius of the earth
+
+
+
+    double deltaLat = degToRad(lat2-lat1); // degToRad is a method that converts the delta of latitudes/longitudes ( which is in degree )
+    double deltaLon = degToRad(lon2-lon1);
+    double a = sin(deltaLat/2) * sin(deltaLat/2) + cos(degToRad(lat1)) * cos(degToRad(lat2)) * sin(deltaLon/2) * sin(deltaLon/2); // sin^2(dLat) +sin^2(dLon) * cos(lat1*pi/180) * cos(lat2*pi/180)
+    double c = 2 * atan2(sqrt(a), sqrt(1-a));
+    double d = R * c; // d distance in km
+    return d;
+
+
+}
+
+// Lecture du fichier et sauvegarde dans la liste chainée
 int readCitiesFile()
 {
     /* FileStream for the Library File */
@@ -86,9 +100,26 @@ void printCitiesList()
     for (i = 1; i <= 71; i++)
     {
         if (villes[i].nom != 0)
-        printf("index i= %i  %f, %f\n",i+1, villes[i].latitude, villes[i].longitude);
+        printf("index i= %i   %f, %f\n",i+1, villes[i].latitude, villes[i].longitude);
         else
             break;
     }
 
 }
+
+
+int main(int argc, char **argv)
+{
+    int isOK = 0;
+
+    isOK = readCitiesFile();
+
+    printCitiesList();
+    system("pause");
+    return 0;
+}
+
+
+
+
+
