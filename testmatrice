@@ -11,53 +11,50 @@
 #define R 6371
 
 
-//typedef struct element*liste;
 
 struct element
 {
     char* ville;
     float latitude;
     float longitude;
-    //struct element* next;
 };
 typedef struct element element;
 
 
 
 #define MAX_STR_LEN 256
-#define MAX_BOOKS 256
+#define NBR_VILLES 72
 
-struct book{
-    char *ville;
+struct ville{
+    char *nom;
     float latitude;
     float longitude;
 };
 
-struct book books[MAX_BOOKS];
+struct ville villes[NBR_VILLES];
 
 /* PROTOTYPE OF FUNCTIONS */
-int readBookFile();
-void printBookList();
+int readCitiesFile();
+void printCitiesList();
 
 int main(int argc, char **argv)
 {
     int isOK = 0;
 
-    isOK = readBookFile();
+    isOK = readCitiesFile();
 
-    printBookList();
+    printCitiesList();
 
     system("pause");
     return 0;
 }
 
-int readBookFile()
+int readCitiesFile()
 {
     /* FileStream for the Library File */
-    //FILE *bookFile;
-    FILE* bookFile = NULL;
-    //int entryCount;
-    bookFile = fopen("Cites.csv", "r");
+    FILE* csvFile = NULL;
+    csvFile = fopen("Cites.csv", "r");
+
     /* allocation of the buffer for every line in the File */
     char *buf = malloc(MAX_STR_LEN);
     char *tmp;
@@ -68,48 +65,42 @@ int readBookFile()
         return 1;
     }
 
-    if (( bookFile ) == NULL ) //Reading a file
+    if (( csvFile ) == NULL ) //Reading a file
     {
         printf( "File could not be opened.\n" );
     }
 
     int i = 0;
-    while (fgets(buf, 255, bookFile) != NULL)
+    while (fgets(buf, 255, csvFile) != NULL)
     {
         if ((strlen(buf)>0) && (buf[strlen (buf) - 1] == '\n'))
             buf[strlen (buf) - 1] = '\0';
 
         tmp = strtok(buf, ",");
-        books[i].ville = (tmp);
+        villes[i].nom = (tmp);
 
         tmp = strtok(NULL, ",");
-        books[i].latitude = atof(tmp);
+        villes[i].latitude = atof(tmp);
 
         tmp = strtok(NULL, ",");
-        books[i].longitude = atof(tmp);
-
-        //tempBook.ID = atoi(buf);
-        //printf("index i= %i  Ville: %c latitude : %f longitude : %f\n",i, books[i].ville , books[i].latitude, books[i].longitude);
+        villes[i].longitude = atof(tmp);
 
         i++;
     }
     //free(buf);
-    fclose(bookFile);
+    fclose(csvFile);
     return 0;
 }
 
-void printBookList()
+void printCitiesList()
 {
 
     int i;
-    //i = sizeof(books) / sizeof(books[0]);
-    //printf ("%i \n", i);
 
-
-    for (i = 0; i <= sizeof(books); i++)
+    for (i = 0; i <= sizeof(villes); i++)
     {
-        if (books[i].ville != 0)
-        printf("index i= %i  ID: %c, %f, %f\n",i, books[i].ville , books[i].latitude, books[i].longitude);
+        if (villes[i].nom != 0)
+        printf("index i= %i  ID: %c, %f, %f\n",i, villes[i].nom , villes[i].latitude, villes[i].longitude);
         else
             break;
     }
