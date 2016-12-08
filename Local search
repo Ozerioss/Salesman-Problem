@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 
-//int matrix[71][71], visited_cities[10000], limite, cost = 0;
+//int matrix[71][71], limite, cost = 0;
 
 int LocalSearch(int c)
 {
@@ -21,7 +21,6 @@ int LocalSearch(int c)
 			}
 			
 			temp = matrix[c][count];
-			nearest_city = count;
 		}
 	}
 	
@@ -32,23 +31,4 @@ int LocalSearch(int c)
 	return nearest_city;
 }
 
-/*void minimum_cost(int city)
-{
-	int nearest_city;
-	visited_cities[city] = 1;
-	printf("%d ", city + 1);
-	nearest_city = tsp(city);
-	if(nearest_city == 999)
-	{
-		nearest_city = 0;
-		printf("%d", nearest_city + 1);
-		cost = cost + matrix[city][nearest_city];
-		return;
-	}
-	minimum_cost(nearest_city);
-}
-
-int main()
-{
-
-}*/
+//affichage du max 
