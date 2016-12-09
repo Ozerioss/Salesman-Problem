@@ -1,6 +1,3 @@
-
-
-
 #include<limits.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,11 +6,13 @@
 #include<string.h>
 #include<stdbool.h>
 #define pi 3.14159265359
-#define V 9
+
 #define R 6371
 
 #define MAX_STR_LEN 1024
 #define NBR_VILLES 72
+
+#define V 71
 
 struct ville{
     int index;
@@ -49,6 +48,14 @@ float calculer_distance(float lat1,float lon1,float lat2,float lon2)  // On extr
     return d;
 
 
+}
+
+void permuter(int a, int b)
+{
+    int c = 0;
+    c = a;
+    a = b;
+    b = c;
 }
 
 void bruteForce(int a[], int i, int n)
@@ -97,13 +104,7 @@ void bruteForce(int a[], int i, int n)
     }
 }
 
-void permuter(int a, int b)
-{
-    int c = 0;
-    c = a;
-    a = b;
-    b = c;
-}
+
 
 bool checkVisited(int id, int tab[])
 {
@@ -130,7 +131,7 @@ void getLongestPath(float currentDist)
         if (!checkVisited(villes[i].index,visited[72]))
         {
                 currentDist = calculer_distance(villes[i].latitude, villes[i].longitude, villes[i+1].latitude, villes[i+1].longitude); // calculate the distance
-                visited[i] = villes[i].index;  // mark it as visited
+                *visited[i] = villes[i].index;  // mark it as visited
                 globalDist += currentDist;
                 printf("%f", globalDist);
         }
@@ -247,7 +248,7 @@ void printPath(int parent[], int j)
 // A utility function to print the constructed distance
 // array
 
-void print(int dist[], int n)
+void print_MST(int dist[], int n)
 {
      int src = 0;
      printf("Vertex\t  Distance Path");
@@ -261,7 +262,7 @@ void print(int dist[], int n)
 // Funtion that implements Dijkstra's single source shortest path algorithm
 // for a graph represented using adjacency matrix representation
 
-void dijkstra(int graph[V][V], int src)
+void dijkstra(float graph[V][V], int src)
 {
       int dist[V];     // The output array.  dist[i] will hold the shortest
                        // distance from src to i
@@ -312,13 +313,13 @@ void dijkstra(int graph[V][V], int src)
       }
 
       // print the constructed distance array
-      print(dist, V);
+      print_MST(dist, V);
 }
 
 
 float **create_array(int size_row, int size_column)
 {
-    float matrice = (float **)malloc(size_row*size_column*sizeof(float));
+    float **matrice = (float **)malloc(size_row*size_column*sizeof(float));
     int k = 0;
     for (int i=0;i<=size_row; i++)
     {
@@ -326,12 +327,12 @@ float **create_array(int size_row, int size_column)
         {
             if(i==j)
             {
-                mat[i][j] = 0;
+                matrice[i][j] = 0;
             }
             else
             {
-                mat[i][j]=calculer_distance(villes[i].latitude, villes[i].longitude, villes[j].latitude, villes[j].longitude); //ville par ville
-                mat[j][i] = mat[i][j]; // to get a symetric matrix
+                matrice[i][j]=calculer_distance(villes[i].latitude, villes[i].longitude, villes[j].latitude, villes[j].longitude); //ville par ville
+                matrice[j][i] = matrice[i][j]; // to get a symetric matrix
             }
         }
     }
@@ -350,13 +351,13 @@ int main(int argc, char **argv)
 
     printCitiesList();
 
-    int size_row = 72;
-    int size_column = 72;
+    int size_row = 71;
+    int size_column = 71;
 
-    float ** matrix = creation_matrice(size_row, size_column); // We create our 72 by 72 matrix that will hold the values of the distance (in km) of all cities
+    //float **matrix = create_array(size_row, size_column); // We create our 72 by 72 matrix that will hold the values of the distance (in km) of all cities
     // for example matrix[47][0] is gonna be distance from Paris to Agen
 
-    dijkstra(matrix,72);
+    //dijkstra(matrix,72);
 
 
 
