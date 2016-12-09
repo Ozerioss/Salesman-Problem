@@ -27,7 +27,7 @@ struct matrice_distance
     int limite;
     double **tab;
 };
-double degToRad(double degree)  // Method to convert to Radian from Degree
+double degToRad(double degree)  // Radian en degrés
 {
     return degree * (pi/180);
 }
@@ -88,7 +88,7 @@ void afficherListe(element *liste)
 
 }
 
-liste InverseTab(liste tab[], int debut, int fin)
+liste InverseTab(liste tab[], int debut, int fin) //On inverse le tableau que l'on a isolé 
 {
     liste temp;
     while (debut < fin)
@@ -103,7 +103,7 @@ liste InverseTab(liste tab[], int debut, int fin)
     return tab;
 }
 
-liste EchangeVille(liste chemin, int i, int k)
+liste EchangeVille(liste chemin, int i, int k) //Méthode pour inverser les points du tableau concerné
 {
     int t=0;
     liste tmp=chemin;
@@ -126,11 +126,6 @@ liste EchangeVille(liste chemin, int i, int k)
      printf("\n");
 
      tab[k-i+1]=InverseTab(tab,0,t);
-     /*for(j = 0; j < t; j++)
-     {
-
-       // printf(" %s %f \n", tab[j]->ville, tab[j]->latitude);
-     }*/
 
     liste nvRoute=NULL;
     for(j=0;j<t;j++)
@@ -138,6 +133,8 @@ liste EchangeVille(liste chemin, int i, int k)
         nvRoute=insertion(nvRoute,tab[j]->ville,tab[j]->latitude,tab[j]->longitude);
     }
 
+    //on inverse nvRoute 
+    //on va ajouter à la liste nvRoute le reste de la liste chaîné
 
     tmp = chemin;
     compteur=0;
@@ -166,7 +163,7 @@ liste EchangeVille(liste chemin, int i, int k)
 
 }
 
-int CalculTotalDistance(liste chemin)
+int CalculTotalDistance(liste chemin) // Calcul de la distance total pour la méthode linKerninghan
 {
   int totaleDistance=0;
 
@@ -182,22 +179,23 @@ int CalculTotalDistance(liste chemin)
 
 liste LinKernighan(liste route)
 {
-int limit =8;
+int limit /*-1 */ =7;
    int meilleuDistance = CalculTotalDistance(route);
    int nvDistance;
    liste nvRoute=NULL;
    int i,k;
-   for(i=1; i<limit-1; i++)
+   for(i=1; i<7/*limit-1*/; i++) // limite = ville total -1 (car on ne prend la derniere ville ou le next est null) 
+                                 //limite = 7 
    {
-       for(k=1; k<limit-1; k++)
+       for(k=1; k<limit-1; k++) 
        {
            nvRoute=EchangeVille(route, i, k);
            nvDistance=CalculTotalDistance(nvRoute);
-           if(nvDistance > meilleuDistance)
+           if(nvDistance > meilleuDistance) // si la nouvelle distance est la + grande on garde 
            {
                route=nvRoute;
            }
-       }
+       }// On boucle 
    }
 
    return route;
