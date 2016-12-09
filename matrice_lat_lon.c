@@ -9,7 +9,7 @@
 #include<string.h>
 #include<stdbool.h>
 #define pi 3.14159265359
-
+#define V 9
 #define R 6371
 
 #define MAX_STR_LEN 1024
@@ -217,12 +217,148 @@ void printCitiesList()
 }
 
 
+
+
+int minDistance(int dist[], bool sptSet[])
+{
+    // Initialize min value
+    int min = INT_MAX, min_index;
+int v;
+    for ( v = 0; v < V; v++)
+    {
+      if (sptSet[v] == false && dist[v] <= min)
+          min = dist[v], min_index = v;
+    }
+    return min_index;
+}
+
+// A utility function to print the constructed distance array
+void printPath(int parent[], int j)
+{
+     // Base Case : If j is source
+     if (parent[j]==-1)
+         return;
+
+     printPath(parent, parent[j]);
+
+     printf("%d ", j);
+}
+
+// A utility function to print the constructed distance
+// array
+
+void print(int dist[], int n)
+{
+     int src = 0;
+     printf("Vertex\t  Distance Path");
+     int i;
+     for ( i = 1; i < V; i++)
+     {
+         printf("\n%d -> %d \t\t %d\t ", src, i, dist[i]);
+      //   printPath(parent, i);
+     }
+}
+// Funtion that implements Dijkstra's single source shortest path algorithm
+// for a graph represented using adjacency matrix representation
+
+void dijkstra(int graph[V][V], int src)
+{
+      int dist[V];     // The output array.  dist[i] will hold the shortest
+                       // distance from src to i
+
+      bool sptSet[V]; // sptSet[i] will true if vertex i is included in shortest
+                      // path tree or shortest distance from src to i is finalized
+
+     // Parent array to store shortest path tree
+         int parent[V];
+
+      // Initialize all distances as INFINITE and stpSet[] as false
+      int i;
+      for ( i = 0; i < V; i++)
+      {
+             dist[i] = INT_MAX;
+             sptSet[i] = false;
+             parent[0] = -1;
+
+      }
+
+      // Distance of source vertex from itself is always 0
+      dist[src] = 0;
+
+      // Find shortest path for all vertices
+      int count;
+      for (count = 0; count < V-1; count++)
+      {
+        // Pick the minimum distance vertex from the set of vertices not
+        // yet processed. u is always equal to src in first iteration.
+        int u = minDistance(dist, sptSet);
+
+        // Mark the picked vertex as processed
+        sptSet[u] = true;
+
+        // Update dist value of the adjacent vertices of the picked vertex.
+        int v;
+        for (v = 0; v < V; v++)
+
+          // Update dist[v] only if is not in sptSet, there is an edge from
+          // u to v, and total weight of path from src to  v through u is
+          // smaller than current value of dist[v]
+          if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX
+                                        && dist[u]+graph[u][v] < dist[v])
+                                        {
+             dist[v] = dist[u] + graph[u][v];
+             parent[v]  = u;
+          }
+      }
+
+      // print the constructed distance array
+      print(dist, V);
+}
+
+
+float **create_array(int size_row, int size_column)
+{
+    float matrice = (float **)malloc(size_row*size_column*sizeof(float));
+    int k = 0;
+    for (int i=0;i<=size_row; i++)
+    {
+        for(int j=0;j<=size_column;j++)
+        {
+            if(i==j)
+            {
+                mat[i][j] = 0;
+            }
+            else
+            {
+                mat[i][j]=calculer_distance(villes[i].latitude, villes[i].longitude, villes[j].latitude, villes[j].longitude); //ville par ville
+                mat[j][i] = mat[i][j]; // to get a symetric matrix
+            }
+        }
+    }
+    return matrice;
+}
+
+void destoryArray(float  **array)
+{
+    free(*array);
+    free(array);
+}
 int main(int argc, char **argv)
 {
 
     readCitiesFile();
 
     printCitiesList();
+
+    int size_row = 72;
+    int size_column = 72;
+
+    float ** matrix = creation_matrice(size_row, size_column); // We create our 72 by 72 matrix that will hold the values of the distance (in km) of all cities
+    // for example matrix[47][0] is gonna be distance from Paris to Agen
+
+    dijkstra(matrix,72);
+
+
 
    // bruteForce(1,3);
     //float x = calculer_distance(48.86669293, 2.333335326, 43.61039878, 3.869985716);  // Exemple Paris / Montpellier
